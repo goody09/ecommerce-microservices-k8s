@@ -68,11 +68,11 @@ jobs:
         run: |
           helm repo add bitnami https://charts.bitnami.com/bitnami --force-update
           helm repo update bitnami
-          helm upgrade --install prometheus bitnami/kube-prometheus --namespace monitoring --create-namespace --version 8.2.2 --values manifest/values.yml --wait
+          helm upgrade --install prometheus bitnami/kube-prometheus --namespace monitoring --create-namespace --version 8.2.2 --values manifest-prometheus/values.yml --wait
 
       - name: Apply Prometheus configurations
         run: |
-          kubectl apply -f ./manifest-manifest-alertconfig /alertmanagerconfig.yml --namespace monitoring
+          kubectl apply -f ./manifest-alertconfig /alertmanagerconfig.yml --namespace monitoring
           kubectl apply -f ./manifest-alertconfig /probes.yml --namespace monitoring
           kubectl apply -f ./manifest-alertconfig /rules.yml --namespace monitoring
 
