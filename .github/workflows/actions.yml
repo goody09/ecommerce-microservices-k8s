@@ -54,6 +54,10 @@ jobs:
           terraform -chdir=terraform_code/ init
           terraform -chdir=terraform_code/ apply --auto-approve
 
+      - name: Update kubeconfig
+        run: |
+          aws eks update-kubeconfig --region ${{ vars.REGION }} --name ${{ vars.CLUSTER_NAME }}
+
       - name: Deploy application microservice
         run: helm upgrade --install goody-sock-shop ./sock-shop-chart
 
