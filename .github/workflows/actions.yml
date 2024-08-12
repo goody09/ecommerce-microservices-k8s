@@ -76,9 +76,9 @@ jobs:
 
       - name: Apply Prometheus configurations
         run: |
-          kubectl apply -f ./manifest-alertconfig /alertmanagerconfig.yml --namespace monitoring
-          kubectl apply -f ./manifest-alertconfig /probes.yml --namespace monitoring
-          kubectl apply -f ./manifest-alertconfig /rules.yml --namespace monitoring
+          kubectl apply -f ./manifest-alertconfig/alertmanagerconfig.yml --namespace monitoring
+          kubectl apply -f ./manifest-alertconfig/probes.yml --namespace monitoring
+          kubectl apply -f ./manifest-alertconfig/rules.yml --namespace monitoring
 
       - name: Configure Alertmanager
         run: |
