@@ -90,7 +90,6 @@ jobs:
             --from-literal=webhookURL=${{ secrets.SLACK_WEBHOOK_URL }} \
             --namespace monitoring
 
-
       - name: Deploy Grafana
         run: |
           helm repo add grafana https://grafana.github.io/helm-charts --force-update
