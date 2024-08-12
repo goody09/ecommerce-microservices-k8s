@@ -80,10 +80,10 @@ jobs:
           kubectl apply -f ./manifest-alertconfig/probes.yml --namespace monitoring
           kubectl apply -f ./manifest-alertconfig/rules.yml --namespace monitoring
 
-      - name: Configure Alertmanager
+      - name: Configure Alertmanager Secret
         run: |
           kubectl create secret generic alertmanager-slack-webhook \
-            --from-literal=slack_webhook_url=${{ secrets.SLACK_WEBHOOK_URL }} \
+            --from-literal=webhookURL=${{ secrets.SLACK_WEBHOOK_URL }} \
             --namespace monitoring
 
       - name: Deploy Grafana
