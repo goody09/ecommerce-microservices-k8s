@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: sockshop-ingress
+  namespace: sock-shop
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-sock
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: sockapp.goodnesseboh.engineer
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: front-end
+                port:
+                  number: 80
+  tls:
+    - hosts:
+        - sockapp.goodnesseboh.engineer
+      secretName: letsencrypt-sock
+

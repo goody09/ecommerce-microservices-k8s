@@ -1,0 +1,263 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: uptime-rules
+  namespace: monitoring
+spec:
+  groups:
+  - name: Sock Shop Uptime
+    rules:
+    - alert: CartsDeploymentDown
+      expr: probe_success{job="carts-deployment"} == 0
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: "Carts deployment is down"
+        description: "The carts deployment probe has failed for more than 1 minute."
+
+    - alert: CartsServiceDown
+      expr: probe_success{job="carts-service"} == 0
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: "Carts service is down"
+        description: "The carts service probe has failed for more than 1 minute."
+
+    - alert: CartsDBDeploymentDown
+      expr: probe_success{job="carts-db-deployment"} == 0
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: "Carts DB deployment is down"
+        description: "The carts-db deployment probe has failed for more than 1 minutes."
+
+    - alert: CartsDBServiceDown
+      expr: probe_success{job="carts-db-service"} == 0
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: "Carts DB service is down"
+        description: "The carts-db service probe has failed for more than 1 minutes."
+
+    - alert: CatalogueDeploymentDown
+      expr: probe_success{job="catalogue-deployment"} == 0
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: "Catalogue deployment is down"
+        description: "The catalogue deployment probe has failed for more than 1 minutes."
+
+    - alert: CatalogueServiceDown
+      expr: probe_success{job="catalogue-service"} == 0
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: "Catalogue service is down"
+        description: "The catalogue service probe has failed for more than 1 minutes."
+
+    - alert: CatalogueDBDeploymentDown
+      expr: probe_success{job="catalogue-db-deployment"} == 0
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: "Catalogue DB deployment is down"
+        description: "The catalogue-db deployment probe has failed for more than 1 minutes."
+
+    - alert: CatalogueDBServiceDown
+      expr: probe_success{job="catalogue-db-service"} == 0
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: "Catalogue DB service is down"
+        description: "The catalogue-db service probe has failed for more than 1 minutes."
+
+    - alert: FrontEndDeploymentDown
+      expr: probe_success{job="front-end-deployment"} == 0
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: "Front-end deployment is down"
+        description: "The front-end deployment probe has failed for more than 1 minutes."
+
+    - alert: FrontEndServiceDown
+      expr: probe_success{job="front-end-service"} == 0
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: "Front-end service is down"
+        description: "The front-end service probe has failed for more than 1 minutes."
+
+    - alert: OrdersDeploymentDown
+      expr: probe_success{job="orders-deployment"} == 0
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: "Orders deployment is down"
+        description: "The orders deployment probe has failed for more than 1 minutes."
+
+    - alert: OrdersServiceDown
+      expr: probe_success{job="orders-service"} == 0
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: "Orders service is down"
+        description: "The orders service probe has failed for more than 1 minutes."
+
+    - alert: OrdersDBDeploymentDown
+      expr: probe_success{job="orders-db-deployment"} == 0
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: "Orders DB deployment is down"
+        description: "The orders DB deployment probe has failed for more than 1 minutes."
+
+    - alert: OrdersDBServiceDown
+      expr: probe_success{job="orders-db-service"} == 0
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: "Orders DB service is down"
+        description: "The orders DB service probe has failed for more than 1 minutes."
+
+    - alert: PaymentDeploymentDown
+      expr: probe_success{job="payment-deployment"} == 0
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: "Payment deployment is down"
+        description: "The payment deployment probe has failed for more than 1 minutes."
+
+    - alert: PaymentServiceDown
+      expr: probe_success{job="payment-service"} == 0
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: "Payment service is down"
+        description: "The payment service probe has failed for more than 1 minutes."
+
+  # Something waas off here
+    - alert: QueueMasterDeploymentDown
+      expr: probe_success{job="queue-master-deployment"} == 0
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: "Queue Master deployment is down"
+        description: "The queue-master deployment probe has failed for more than 1 minutes."
+
+    - alert: QueueMasterServiceDown
+      expr: probe_success{job="queue-master-service"} == 0
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: "Queue Master service is down"
+        description: "The queue-master service probe has failed for more than 1 minutes."
+
+    - alert: RabbitMQDeploymentDown
+      expr: probe_success{job="rabbitmq-deployment"} == 0
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: "RabbitMQ deployment is down"
+        description: "The RabbitMQ deployment probe has failed for more than 1 minutes."
+
+    - alert: RabbitMQServiceDown
+      expr: probe_success{job="rabbitmq-service"} == 0
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: "RabbitMQ service is down"
+        description: "The RabbitMQ service probe has failed for more than 1 minutes."
+
+    - alert: SessionDBDeploymentDown
+      expr: probe_success{job="session-db-deployment"} == 0
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: "Session DB deployment is down"
+        description: "The session DB deployment probe has failed for more than 1 minutes."
+
+    - alert: SessionDBServiceDown
+      expr: probe_success{job="session-db-service"} == 0
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: "Session DB service is down"
+        description: "The session DB service probe has failed for more than 1 minutes."
+
+    - alert: ShippingDeploymentDown
+      expr: probe_success{job="shipping-deployment"} == 0
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: "Shipping deployment is down"
+        description: "The shipping deployment probe has failed for more than 1 minutes."
+
+    - alert: ShippingServiceDown
+      expr: probe_success{job="shipping-service"} == 0
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: "Shipping service is down"
+        description: "The shipping service probe has failed for more than 1 minutes."
+
+    - alert: UserDeploymentDown
+      expr: probe_success{job="user-deployment"} == 0
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: "User deployment is down"
+        description: "The user deployment probe has failed for more than 1 minutes."
+
+    - alert: UserServiceDown
+      expr: probe_success{job="user-service"} == 0
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: "User service is down"
+        description: "The user service probe has failed for more than 1 minutes."
+
+    - alert: UserDBDeploymentDown
+      expr: probe_success{job="user-db-deployment"} == 0
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: "User DB deployment is down"
+        description: "The user DB deployment probe has failed for more than 1 minutes."
+
+    - alert: UserDBServiceDown
+      expr: probe_success{job="user-db-service"} == 0
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: "User DB service is down"
+        description: "The user DB service probe has failed for more than 1 minutes."
+  

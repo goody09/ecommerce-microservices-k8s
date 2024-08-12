@@ -1,0 +1,37 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: monitoring-ingress
+  namespace: monitoring
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-sock
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: sockprom.goodnesseboh.engineer
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: prometheus-kube-prometheus-prometheus
+                port:
+                  number: 9090
+
+    - host: sockgraf.goodnesseboh.engineer
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: grafana
+                port:
+                  number: 80
+                  
+  tls:
+    - hosts:
+        - sockprom.goodnesseboh.engineer
+        - sockgraf.goodnesseboh.engineer
+      secretName: letsencrypt-sock

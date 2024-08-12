@@ -1,0 +1,701 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: carts-deployment-probe
+  namespace: monitoring
+  labels:
+    app: sock-shop
+    component: carts
+    target: deployment
+spec:
+  jobName: carts-deployment
+  prober:
+    url: prometheus-kube-prometheus-blackbox-exporter:19115
+    path: /probe
+  module: http_2xx
+  interval: 60s
+  scrapeTimeout: 30s
+  targets:
+    staticConfig:
+      labels:
+        app: carts
+        target: deployment
+      static:
+        - carts.sock-shop.svc.cluster.local:80
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: carts-service-probe
+  namespace: monitoring
+  labels:
+    app: sock-shop
+    component: carts
+    target: service
+spec:
+  jobName: carts-service
+  prober:
+    url: prometheus-kube-prometheus-blackbox-exporter:19115
+    path: /probe
+  module: http_2xx
+  interval: 60s
+  scrapeTimeout: 30s
+  targets:
+    staticConfig:
+      labels:
+        app: carts
+        target: service
+      static:
+        - carts.sock-shop.svc.cluster.local:80
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: carts-db-deployment-probe
+  namespace: monitoring
+  labels:
+    app: sock-shop
+    component: carts-db
+    target: deployment
+spec:
+  jobName: carts-db-deployment
+  prober:
+    url: prometheus-kube-prometheus-blackbox-exporter:19115
+    path: /probe
+  module: tcp_connect
+  interval: 60s
+  scrapeTimeout: 30s
+  targets:
+    staticConfig:
+      labels:
+        app: carts-db
+        target: deployment
+      static:
+        - carts-db.sock-shop.svc.cluster.local:27017
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: carts-db-service-probe
+  namespace: monitoring
+  labels:
+    app: sock-shop
+    component: carts-db
+    target: service
+spec:
+  jobName: carts-db-service
+  prober:
+    url: prometheus-kube-prometheus-blackbox-exporter:19115
+    path: /probe
+  module: tcp_connect
+  interval: 60s
+  scrapeTimeout: 30s
+  targets:
+    staticConfig:
+      labels:
+        app: carts-db
+        target: service
+      static:
+        - carts-db.sock-shop.svc.cluster.local:27017
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: catalogue-deployment-probe
+  namespace: monitoring
+  labels:
+    app: sock-shop
+    component: catalogue
+    target: deployment
+spec:
+  jobName: catalogue-deployment
+  prober:
+    url: prometheus-kube-prometheus-blackbox-exporter:19115
+    path: /probe
+  module: http_2xx
+  interval: 60s
+  scrapeTimeout: 30s
+  targets:
+    staticConfig:
+      labels:
+        app: catalogue
+        target: deployment
+      static:
+        - catalogue.sock-shop.svc.cluster.local:80
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: catalogue-service-probe
+  namespace: monitoring
+  labels:
+    app: sock-shop
+    component: catalogue
+    target: service
+spec:
+  jobName: catalogue-service
+  prober:
+    url: prometheus-kube-prometheus-blackbox-exporter:19115
+    path: /probe
+  module: http_2xx
+  interval: 60s
+  scrapeTimeout: 30s
+  targets:
+    staticConfig:
+      labels:
+        app: catalogue
+        target: service
+      static:
+        - catalogue.sock-shop.svc.cluster.local:80
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: catalogue-db-deployment-probe
+  namespace: monitoring
+  labels:
+    app: sock-shop
+    component: catalogue-db
+    target: deployment
+spec:
+  jobName: catalogue-db-deployment
+  prober:
+    url: prometheus-kube-prometheus-blackbox-exporter:19115
+    path: /probe
+  module: tcp_connect
+  interval: 60s
+  scrapeTimeout: 30s
+  targets:
+    staticConfig:
+      labels:
+        app: catalogue-db
+        target: deployment
+      static:
+        - catalogue-db.sock-shop.svc.cluster.local:3306
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: catalogue-db-service-probe
+  namespace: monitoring
+  labels:
+    app: sock-shop
+    component: catalogue-db
+    target: service
+spec:
+  jobName: catalogue-db-service
+  prober:
+    url: prometheus-kube-prometheus-blackbox-exporter:19115
+    path: /probe
+  module: tcp_connect
+  interval: 60s
+  scrapeTimeout: 30s
+  targets:
+    staticConfig:
+      labels:
+        app: catalogue-db
+        target: service
+      static:
+        - catalogue-db.sock-shop.svc.cluster.local:3306
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: front-end-deployment-probe
+  namespace: monitoring
+  labels:
+    app: sock-shop
+    component: front-end
+    target: deployment
+spec:
+  jobName: front-end-deployment
+  prober:
+    url: prometheus-kube-prometheus-blackbox-exporter:19115
+    path: /probe
+  module: http_2xx
+  interval: 60s
+  scrapeTimeout: 30s
+  targets:
+    staticConfig:
+      labels:
+        app: front-end
+        target: deployment
+      static:
+        - front-end.sock-shop.svc.cluster.local:8079
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: front-end-service-probe
+  namespace: monitoring
+  labels:
+    app: sock-shop
+    component: front-end
+    target: service
+spec:
+  jobName: front-end-service
+  prober:
+    url: prometheus-kube-prometheus-blackbox-exporter:19115
+    path: /probe
+  module: http_2xx
+  interval: 60s
+  scrapeTimeout: 30s
+  targets:
+    staticConfig:
+      labels:
+        app: front-end
+        target: service
+      static:
+        - front-end.sock-shop.svc.cluster.local:80
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: orders-deployment-probe
+  namespace: monitoring
+  labels:
+    app: sock-shop
+    component: orders
+    target: deployment
+spec:
+  jobName: orders-deployment
+  prober:
+    url: prometheus-kube-prometheus-blackbox-exporter:19115
+    path: /probe
+  module: http_2xx
+  interval: 60s
+  scrapeTimeout: 30s
+  targets:
+    staticConfig:
+      labels:
+        app: orders
+        target: deployment
+      static:
+        - orders.sock-shop.svc.cluster.local:80
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: orders-service-probe
+  namespace: monitoring
+  labels:
+    app: sock-shop
+    component: orders
+    target: service
+spec:
+  jobName: orders-service
+  prober:
+    url: prometheus-kube-prometheus-blackbox-exporter:19115
+    path: /probe
+  module: http_2xx
+  interval: 60s
+  scrapeTimeout: 30s
+  targets:
+    staticConfig:
+      labels:
+        app: orders
+        target: service
+      static:
+        - orders.sock-shop.svc.cluster.local:80
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: orders-db-deployment-probe
+  namespace: monitoring
+  labels:
+    app: sock-shop
+    component: orders-db
+    target: deployment
+spec:
+  jobName: orders-db-deployment
+  prober:
+    url: prometheus-kube-prometheus-blackbox-exporter:19115
+    path: /probe
+  module: http_2xx
+  interval: 60s
+  scrapeTimeout: 30s
+  targets:
+    staticConfig:
+      labels:
+        app: orders-db
+        target: deployment
+      static:
+        - orders-db.sock-shop.svc.cluster.local:27017
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: orders-db-service-probe
+  namespace: monitoring
+  labels:
+    app: sock-shop
+    component: orders-db
+    target: service
+spec:
+  jobName: orders-db-service
+  prober:
+    url: prometheus-kube-prometheus-blackbox-exporter:19115
+    path: /probe
+  module: http_2xx
+  interval: 60s
+  scrapeTimeout: 30s
+  targets:
+    staticConfig:
+      labels:
+        app: orders-db
+        target: service
+      static:
+        - orders-db.sock-shop.svc.cluster.local:27017
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: payment-deployment-probe
+  namespace: monitoring
+  labels:
+    app: sock-shop
+    component: payment
+    target: deployment
+spec:
+  jobName: payment-deployment
+  prober:
+    url: prometheus-kube-prometheus-blackbox-exporter:19115
+    path: /probe
+  module: http_2xx
+  interval: 60s
+  scrapeTimeout: 30s
+  targets:
+    staticConfig:
+      labels:
+        app: payment
+        target: deployment
+      static:
+        - payment.sock-shop.svc.cluster.local:80
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: payment-service-probe
+  namespace: monitoring
+  labels:
+    app: sock-shop
+    component: payment
+    target: service
+spec:
+  jobName: payment-service
+  prober:
+    url: prometheus-kube-prometheus-blackbox-exporter:19115
+    path: /probe
+  module: http_2xx
+  interval: 60s
+  scrapeTimeout: 30s
+  targets:
+    staticConfig:
+      labels:
+        app: payment
+        target: service
+      static:
+        - payment.sock-shop.svc.cluster.local:80
+        
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: queue-master-deployment-probe
+  namespace: monitoring
+  labels:
+    app: sock-shop
+    component: queue-master
+    target: deployment
+spec:
+  jobName: queue-master-deployment
+  prober:
+    url: prometheus-kube-prometheus-blackbox-exporter:19115
+    path: /probe
+  module: http_2xx
+  interval: 60s
+  scrapeTimeout: 30s
+  targets:
+    staticConfig:
+      labels:
+        app: queue-master
+        target: deployment
+      static:
+        - queue-master.sock-shop.svc.cluster.local:80
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: queue-master-service-probe
+  namespace: monitoring
+  labels:
+    app: sock-shop
+    component: queue-master
+    target: service
+spec:
+  jobName: queue-master-service
+  prober:
+    url: prometheus-kube-prometheus-blackbox-exporter:19115
+    path: /probe
+  module: http_2xx
+  interval: 60s
+  scrapeTimeout: 30s
+  targets:
+    staticConfig:
+      labels:
+        app: queue-master
+        target: service
+      static:
+        - queue-master.sock-shop.svc.cluster.local:80
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: rabbitmq-deployment-probe
+  namespace: monitoring
+  labels:
+    app: sock-shop
+    component: rabbitmq
+    target: deployment
+spec:
+  jobName: rabbitmq-deployment
+  prober:
+    url: prometheus-kube-prometheus-blackbox-exporter:19115
+    path: /probe
+  module: http_2xx
+  interval: 60s
+  scrapeTimeout: 30s
+  targets:
+    staticConfig:
+      labels:
+        app: rabbitmq
+        target: deployment
+      static:
+        - rabbitmq.sock-shop.svc.cluster.local:15672
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: rabbitmq-service-probe
+  namespace: monitoring
+  labels:
+    app: sock-shop
+    component: rabbitmq
+    target: service
+spec:
+  jobName: rabbitmq-service
+  prober:
+    url: prometheus-kube-prometheus-blackbox-exporter:19115
+    path: /probe
+  module: http_2xx
+  interval: 60s
+  scrapeTimeout: 30s
+  targets:
+    staticConfig:
+      labels:
+        app: rabbitmq
+        target: service
+      static:
+        - rabbitmq.sock-shop.svc.cluster.local:5672
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: session-db-deployment-probe
+  namespace: monitoring
+  labels:
+    app: sock-shop
+    component: session-db
+    target: deployment
+spec:
+  jobName: session-db-deployment
+  prober:
+    url: prometheus-kube-prometheus-blackbox-exporter:19115
+    path: /probe
+  module: http_2xx
+  interval: 60s
+  scrapeTimeout: 30s
+  targets:
+    staticConfig:
+      labels:
+        app: session-db
+        target: deployment
+      static:
+        - session-db.sock-shop.svc.cluster.local:6379
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: session-db-service-probe
+  namespace: monitoring
+  labels:
+    app: sock-shop
+    component: session-db
+    target: service
+spec:
+  jobName: session-db-service
+  prober:
+    url: prometheus-kube-prometheus-blackbox-exporter:19115
+    path: /probe
+  module: http_2xx
+  interval: 60s
+  scrapeTimeout: 30s
+  targets:
+    staticConfig:
+      labels:
+        app: session-db
+        target: service
+      static:
+        - session-db.sock-shop.svc.cluster.local:6379
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: shipping-deployment-probe
+  namespace: monitoring
+  labels:
+    app: sock-shop
+    component: shipping
+    target: deployment
+spec:
+  jobName: shipping-deployment
+  prober:
+    url: prometheus-kube-prometheus-blackbox-exporter:19115
+    path: /probe
+  module: http_2xx
+  interval: 60s
+  scrapeTimeout: 30s
+  targets:
+    staticConfig:
+      labels:
+        app: shipping
+        target: deployment
+      static:
+        - shipping.sock-shop.svc.cluster.local:80
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: shipping-service-probe
+  namespace: monitoring
+  labels:
+    app: sock-shop
+    component: shipping
+    target: service
+spec:
+  jobName: shipping-service
+  prober:
+    url: prometheus-kube-prometheus-blackbox-exporter:19115
+    path: /probe
+  module: http_2xx
+  interval: 60s
+  scrapeTimeout: 30s
+  targets:
+    staticConfig:
+      labels:
+        app: shipping
+        target: service
+      static:
+        - shipping.sock-shop.svc.cluster.local:80
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: user-deployment-probe
+  namespace: monitoring
+  labels:
+    app: sock-shop
+    component: user
+    target: deployment
+spec:
+  jobName: user-deployment
+  prober:
+    url: prometheus-kube-prometheus-blackbox-exporter:19115
+    path: /probe
+  module: http_2xx
+  interval: 60s
+  scrapeTimeout: 30s
+  targets:
+    staticConfig:
+      labels:
+        app: user
+        target: deployment
+      static:
+        - user.sock-shop.svc.cluster.local:80
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: user-service-probe
+  namespace: monitoring
+  labels:
+    app: sock-shop
+    component: user
+    target: service
+spec:
+  jobName: user-service
+  prober:
+    url: prometheus-kube-prometheus-blackbox-exporter:19115
+    path: /probe
+  module: http_2xx
+  interval: 60s
+  scrapeTimeout: 30s
+  targets:
+    staticConfig:
+      labels:
+        app: user
+        target: service
+      static:
+        - user.sock-shop.svc.cluster.local:80
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: user-db-deployment-probe
+  namespace: monitoring
+  labels:
+    app: sock-shop
+    component: user-db
+    target: deployment
+spec:
+  jobName: user-db-deployment
+  prober:
+    url: prometheus-kube-prometheus-blackbox-exporter:19115
+    path: /probe
+  module: http_2xx
+  interval: 60s
+  scrapeTimeout: 30s
+  targets:
+    staticConfig:
+      labels:
+        app: user-db
+        target: deployment
+      static:
+        - user-db.sock-shop.svc.cluster.local:27017
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: user-db-service-probe
+  namespace: monitoring
+  labels:
+    app: sock-shop
+    component: user-db
+    target: service
+spec:
+  jobName: user-db-service
+  prober:
+    url: prometheus-kube-prometheus-blackbox-exporter:19115
+    path: /probe
+  module: http_2xx
+  interval: 60s
+  scrapeTimeout: 30s
+  targets:
+    staticConfig:
+      labels:
+        app: user-db
+        target: service
+      static:
+        - user-db.sock-shop.svc.cluster.local:27017

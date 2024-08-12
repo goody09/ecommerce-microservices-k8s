@@ -1,0 +1,106 @@
+name: CI/CD Workflow
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ vars.REGION }}
+
+      - name: Install kubectl
+        uses: azure/setup-kubectl@v3
+
+      - name: Install helm
+        uses: azure/setup-helm@v4.2.0
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Create S3 bucket if it doesn't exist
+        run: |
+          if ! aws s3 ls "s3://sock-shop-terraform-state-bucket" 2>&1 | grep -q 'NoSuchBucket'; then
+            echo "Bucket already exists, skipping creation."
+          else
+            aws s3 mb s3://sock-shop-terraform-state-bucket
+          fi
+
+      - name: Create DynamoDB table if it doesn't exist
+        run: |
+          if aws dynamodb describe-table --table-name sock-shop-terraform-locks >/dev/null 2>&1; then
+            echo "DynamoDB table already exists, skipping creation."
+          else
+            aws dynamodb create-table \
+              --table-name sock-shop-terraform-locks \
+              --attribute-definitions AttributeName=LockID,AttributeType=S \
+              --key-schema AttributeName=LockID,KeyType=HASH \
+              --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5
+          fi
+
+      - name: Deploy Terraform infrastructure
+        run: |
+          terraform -chdir=terraform/ init
+          terraform -chdir=terraform apply --auto-approve
+
+      - name: Deploy application microservice
+        run: helm upgrade --install goody-sock-shop ./sock-shop-chart
+
+      - name: Deploy Let's Encrypt
+        run: |
+          helm repo add jetstack https://charts.jetstack.io --force-update
+          helm repo update jetstack
+          helm upgrade --install cert-manager jetstack/cert-manager --namespace cert-manager --create-namespace --version v1.15.2 --set crds.enabled=true
+          helm upgrade --install encrypt ./encrypt-chart
+
+      - name: Deploy Prometheus
+        run: |
+          helm repo add bitnami https://charts.bitnami.com/bitnami --force-update
+          helm repo update bitnami
+          helm upgrade --install prometheus bitnami/kube-prometheus --namespace monitoring --create-namespace --version 8.2.2 --values manifest/values.yml --wait
+
+      - name: Apply Prometheus configurations
+        run: |
+          kubectl apply -f ./manifest-manifest-alertconfig /alertmanagerconfig.yml --namespace monitoring
+          kubectl apply -f ./manifest-alertconfig /probes.yml --namespace monitoring
+          kubectl apply -f ./manifest-alertconfig /rules.yml --namespace monitoring
+
+      - name: Configure Alertmanager
+        run: |
+          kubectl create secret generic alertmanager-slack-webhook \
+            --from-literal=slack_webhook_url=${{ secrets.SLACK_WEBHOOK_URL }} \
+            --namespace monitoring
+
+      - name: Deploy Grafana
+        run: |
+          helm repo add grafana https://grafana.github.io/helm-charts --force-update
+          helm repo update grafana
+          helm upgrade --install grafana grafana/grafana --namespace monitoring
+
+      - name: Deploy Ingress
+        run: |
+          helm repo add nginx https://kubernetes.github.io/ingress-nginx
+          helm repo update nginx
+          helm upgrade --install nginx nginx/ingress-nginx --namespace sock-shop
+          helm upgrade --install ingress ./ingress-chart
+
+      - name: Notify Slack on Success
+        if: success()
+        run: |
+          curl -X POST -H 'Content-type: application/json' --data '{"text":"Workflow succeeded! Everything is working as expected."}' ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: Notify Slack on Failure
+        if: failure()
+        run: |
+          curl -X POST -H 'Content-type: application/json' --data '{"text":"Workflow failed. Please check the logs for more details."}' ${{ secrets.SLACK_WEBHOOK_URL }}
