@@ -51,8 +51,8 @@ jobs:
 
       - name: Deploy Terraform infrastructure
         run: |
-          terraform -chdir=terraform/ init
-          terraform -chdir=terraform apply --auto-approve
+          terraform -chdir=terraform_code/ init
+          terraform -chdir=terraform_code/ apply --auto-approve
 
       - name: Deploy application microservice
         run: helm upgrade --install goody-sock-shop ./sock-shop-chart
