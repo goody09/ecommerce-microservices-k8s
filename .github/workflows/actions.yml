@@ -31,9 +31,10 @@ jobs:
 
       - name: Create S3 bucket if it doesn't exist
         run: |
-          if ! aws s3 ls "s3://$S3_BUCKET_NAME" 2>&1 | grep -q 'NoSuchBucket'; then
+          if aws s3 ls "s3://$S3_BUCKET_NAME" >/dev/null 2>&1; then
             echo "Bucket already exists, skipping creation."
           else
+            echo "Bucket does not exist, creating it."
             aws s3 mb s3://$S3_BUCKET_NAME
           fi
 
