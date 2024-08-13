@@ -4,6 +4,7 @@ metadata:
   name: monitoring-ingress
   namespace: monitoring
   annotations:
+    kubernetes.io/ingress.class: nginx
     cert-manager.io/cluster-issuer: letsencrypt-sock
 spec:
   ingressClassName: nginx
