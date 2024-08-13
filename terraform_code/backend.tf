@@ -1,8 +1,8 @@
 terraform {
   backend "s3" {
-    bucket         = "sock-shop-terraform-state-bucket"
-    key            = "terraform/state"
-    region         = "us-east-1"
-    dynamodb_table = "sock-shop-terraform-locks"
+    bucket         = var.s3_bucket_name
+    key            = var.terraform_state_key
+    region         = var.aws_region
+    dynamodb_table = var.dynamodb_table_name
   }
 }
