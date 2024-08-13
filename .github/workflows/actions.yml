@@ -35,7 +35,7 @@ jobs:
               echo "Bucket already exists, skipping creation."
             else
               echo "Bucket does not exist, creating it."
-              aws s3 mb s3://S3_BUCKET_NAME
+              aws s3 mb s3://"S3_BUCKET_NAME"
             fi
 
       - name: Create DynamoDB table if it doesn't exist
