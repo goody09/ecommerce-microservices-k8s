@@ -101,8 +101,15 @@ jobs:
         run: |
           helm repo add nginx https://kubernetes.github.io/ingress-nginx
           helm repo update nginx
-          helm upgrade --install nginx nginx/ingress-nginx --namespace sock-shop
+          helm upgrade --install nginx nginx/ingress-nginx --namespace sock-shop --wait
+
+      - name: Delay for Ingress Controller to stabilize
+        run: sleep 60s
+
+      - name: Deploy Ingress
+        run: |
           helm upgrade --install ingress ./ingress-chart
+
 
       - name: Notify Slack on Success
         if: success()
