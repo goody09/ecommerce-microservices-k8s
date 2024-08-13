@@ -31,11 +31,11 @@ jobs:
 
       - name: Create S3 bucket if it doesn't exist
         run: |
-           if aws s3api head-bucket --bucket "${{ env.S3_BUCKET_NAME }}" >/dev/null 2>&1; then
+           if aws s3api head-bucket --bucket "${{ vars.S3_BUCKET_NAME }}" >/dev/null 2>&1; then
               echo "Bucket already exists, skipping creation."
             else
               echo "Bucket does not exist, creating it."
-              aws s3 mb s3://"${{ env.S3_BUCKET_NAME }}"
+              aws s3 mb s3://"${{ vars.S3_BUCKET_NAME }}"
             fi
 
       - name: Create DynamoDB table if it doesn't exist
