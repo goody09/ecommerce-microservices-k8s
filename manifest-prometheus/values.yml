@@ -1,3 +1,4 @@
+#Resource allocation is dependent on how cluster size and how much resources that is being handleded 
 operator:
   resources:
     limits:
@@ -22,6 +23,7 @@ prometheus:
       ephemeral-storage: 1Gi
       memory: 512Mi
 
+#Depending on what needs to be monitored, node exporter and kube-state-metrics can be set to true and appropirate resource allocation can be passed to it.
 exporters:
   node-exporter:
     enabled: false
