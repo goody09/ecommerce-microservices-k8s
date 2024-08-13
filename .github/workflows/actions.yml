@@ -39,6 +39,11 @@ jobs:
 
       - name: Create DynamoDB table if it doesn't exist
         run: |
+          if [ -z "$DYNAMODB_TABLE_NAME" ]; then
+            echo "Error: DYNAMODB_TABLE_NAME is not set or is empty."
+            exit 1
+          fi
+          
           if aws dynamodb describe-table --table-name "$DYNAMODB_TABLE_NAME" >/dev/null 2>&1; then
             echo "DynamoDB table already exists, skipping creation."
           else
