@@ -152,7 +152,6 @@ spec:
         summary: "Payment service is down"
         description: "The payment service probe has failed for more than 1 minutes."
 
-  # Something waas off here
     - alert: QueueMasterDeploymentDown
       expr: probe_success{job="queue-master-deployment"} == 0
       for: 1m
