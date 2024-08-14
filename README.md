@@ -17,9 +17,9 @@ This project deploys the Socks Shop microservices application on Kubernetes usin
 
 The architecture includes the following components:
 
-1. **Kubernetes Cluster**: Managed by AWS EKS (Elastic Kubernetes Service), the cluster hosts the microservices that make up the Socks Shop application.
+1. **Kubernetes Cluster**: Managed by AWS EKS (Elastic Kubernetes Service), the cluster hosts the microservices that comprise the Socks Shop application.
 2. **Terraform**: Used to provision the infrastructure, including the EKS cluster, VPC, S3 bucket, and DynamoDB table.
-3. **Helm**: Manages the deployment of applications and services within the Kubernetes cluster.
+3. **Helm**: Manages deployment of applications and services within the Kubernetes cluster.
 4. **Prometheus**: Monitors the performance and health of the microservices, Kubernetes resources, and other critical infrastructure.
 5. **Grafana**: Provides a user-friendly interface for visualizing metrics collected by Prometheus.
 6. **Alertmanager**: Manages alerts triggered by Prometheus, with notifications sent to Slack.
