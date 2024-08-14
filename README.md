@@ -32,8 +32,7 @@ The architecture includes the following components:
 SOCK-SHOP-MS/
 ├── .github/
 │   └── workflows/                         # GitHub Actions workflows for CI/CD automation.
-│       ├── actions.yml                     # Workflow for deploying infrastructure and applications.
-│       └── destroy.yml                    # Workflow for tearing down infrastructure and applications.
+│       ├── actions.yml                     # Workflow for deploying infrastructure and applications.                 
 ├── encrypt-chart/
 │   └── templates/
 │       ├── cert-issue.yml                 # Kubernetes manifest for issuing SSL certificates using Let's Encrypt.
@@ -228,7 +227,3 @@ Navigate to the "Actions" tab in your GitHub repository and select the `deploy.y
 ## Conclusion
 
 This project provides a fully automated, scalable, and secure deployment of the Socks Shop microservices application on Kubernetes, with comprehensive monitoring, logging, and alerting built-in. The use of GitHub Actions for CI/CD ensures that the deployment and management process is streamlined and easily replicable.
-
-## Contributing
-
-Contributions to this project are welcome. Please adhere to the guidelines outlined in the contributing section of this repository.
