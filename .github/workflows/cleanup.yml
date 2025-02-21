@@ -18,6 +18,9 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ vars.REGION }}
 
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v2      
+
       - name: Update Kubeconfig
         run: |
           aws eks update-kubeconfig --region ${{ vars.REGION }} --name ${{ vars.CLUSTER_NAME }}
