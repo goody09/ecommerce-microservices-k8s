@@ -19,7 +19,11 @@ jobs:
           aws-region: ${{ vars.REGION }}
 
       - name: Install Terraform
-        uses: hashicorp/setup-terraform@v2      
+        uses: hashicorp/setup-terraform@v2   
+
+      - name: Initialize Terraform
+        run: |
+          terraform -chdir=terraform_code/ init -reconfigure
 
       - name: Update Kubeconfig
         run: |
