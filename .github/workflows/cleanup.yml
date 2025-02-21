@@ -24,16 +24,7 @@ jobs:
 
       - name: Delete Kubernetes Resources
         run: |
-          helm uninstall goody-sock-shop || true
-          helm uninstall encrypt --namespace cert-manager || true
-          helm uninstall cert-manager --namespace cert-manager || true
-          helm uninstall prometheus --namespace monitoring || true
-          helm uninstall grafana --namespace monitoring || true
           helm uninstall nginx --namespace sock-shop || true
-          kubectl delete namespace cert-manager --ignore-not-found=true
-          kubectl delete namespace monitoring --ignore-not-found=true
-          kubectl delete namespace sock-shop --ignore-not-found=true
-          kubectl delete all --all --namespace=default --ignore-not-found=true
 
       - name: Destroy Terraform Infrastructure
         run: |
