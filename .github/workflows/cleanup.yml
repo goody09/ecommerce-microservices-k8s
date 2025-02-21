@@ -1,0 +1,58 @@
+name: Cleanup Workflow
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 3 * * *"  # Runs daily at 3 AM UTC (optional)
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ vars.REGION }}
+
+      - name: Delete Kubernetes Resources
+        run: |
+          helm uninstall goody-sock-shop || true
+          helm uninstall encrypt --namespace cert-manager || true
+          helm uninstall cert-manager --namespace cert-manager || true
+          helm uninstall prometheus --namespace monitoring || true
+          helm uninstall grafana --namespace monitoring || true
+          helm uninstall nginx --namespace sock-shop || true
+          kubectl delete namespace cert-manager --ignore-not-found=true
+          kubectl delete namespace monitoring --ignore-not-found=true
+          kubectl delete namespace sock-shop --ignore-not-found=true
+          kubectl delete all --all --namespace=default --ignore-not-found=true
+
+      - name: Destroy Terraform Infrastructure
+        run: |
+          terraform -chdir=terraform_code/ destroy --auto-approve || true
+
+      - name: Delete S3 Bucket
+        run: |
+          if aws s3api head-bucket --bucket "${{ vars.S3_BUCKET_NAME }}" >/dev/null 2>&1; then
+            echo "Deleting S3 bucket..."
+            aws s3 rb s3://${{ vars.S3_BUCKET_NAME }} --force
+          else
+            echo "S3 bucket does not exist, skipping."
+          fi
+
+      - name: Delete DynamoDB Table
+        run: |
+          if aws dynamodb describe-table --table-name "${{ vars.DYNAMODB_TABLE_NAME }}" >/dev/null 2>&1; then
+            echo "Deleting DynamoDB table..."
+            aws dynamodb delete-table --table-name "${{ vars.DYNAMODB_TABLE_NAME }}"
+          else
+            echo "DynamoDB table does not exist, skipping."
+          fi
+
+      - name: Notify Slack on Cleanup Completion
+        run: |
+          curl -X POST -H 'Content-type: application/json' --data '{"text":"Cleanup completed. All resources deleted."}' ${{ secrets.SLACK_WEBHOOK_URL }}
