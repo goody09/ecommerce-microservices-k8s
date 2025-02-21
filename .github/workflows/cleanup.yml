@@ -31,7 +31,7 @@ jobs:
 
       - name: Destroy Terraform Infrastructure
         run: |
-          terraform -chdir=terraform_code/ destroy --auto-approve || true
+          terraform -chdir=terraform_code/ destroy --auto-approve
 
       - name: Delete S3 Bucket
         run: |
