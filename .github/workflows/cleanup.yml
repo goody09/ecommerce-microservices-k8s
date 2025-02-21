@@ -18,6 +18,10 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ vars.REGION }}
 
+      - name: Update Kubeconfig
+        run: |
+          aws eks update-kubeconfig --region ${{ vars.REGION }} --name ${{ vars.CLUSTER_NAME }}
+
       - name: Delete Kubernetes Resources
         run: |
           helm uninstall goody-sock-shop || true
