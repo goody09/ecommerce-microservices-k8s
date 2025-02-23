@@ -2,8 +2,8 @@ name: Cleanup Workflow
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "0 3 * * *"  # Runs daily at 3 AM UTC (optional)
+  #schedule:
+    #- cron: "0 3 * * *"  # Runs daily at 3 AM UTC (optional)
 
 jobs:
   cleanup:
