@@ -16,7 +16,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ROTATED_USER_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_ROTATED_USER_SECRET_ACCESS_KEY }}
-          aws-region: ${{ vars.REGION }}
+          aws-region: ${{ secrets.REGION }}
 
       - name: Install kubectl
         uses: azure/setup-kubectl@v3
