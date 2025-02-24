@@ -29,11 +29,11 @@ jobs:
 
       - name: Create S3 bucket if it doesn't exist
         run: |
-           if aws s3api head-bucket --bucket "${{ vars.S3_BUCKET_NAME }}" >/dev/null 2>&1; then
+           if aws s3api head-bucket --bucket "${{ secrets.S3_BUCKET_NAME }}" >/dev/null 2>&1; then
               echo "Bucket already exists, skipping creation."
             else
               echo "Bucket does not exist, creating it."
-              aws s3 mb s3://"${{ vars.S3_BUCKET_NAME }}"
+              aws s3 mb s3://"${{ secrets.S3_BUCKET_NAME }}"
             fi
 
       - name: Create DynamoDB table if it doesn't exist
@@ -42,7 +42,7 @@ jobs:
             echo "DynamoDB table already exists, skipping creation."
           else
             aws dynamodb create-table \
-              --table-name "${{ vars.DYNAMODB_TABLE_NAME }}" \
+              --table-name "${{ secrets.DYNAMODB_TABLE_NAME }}" \
               --attribute-definitions AttributeName=LockID,AttributeType=S \
               --key-schema AttributeName=LockID,KeyType=HASH \
               --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5
@@ -55,7 +55,7 @@ jobs:
 
       - name: Update kubeconfig
         run: |
-          aws eks update-kubeconfig --region ${{ vars.REGION }} --name ${{ vars.CLUSTER_NAME }}
+          aws eks update-kubeconfig --region ${{ secrets.REGION }} --name ${{ secrets.CLUSTER_NAME }}
 
       - name: Deploy application microservice
         run: helm upgrade --install goody-sock-shop ./sock-shop-chart
