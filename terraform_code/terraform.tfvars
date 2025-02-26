@@ -1,1 +1,1 @@
-name = "goody-sock-shop"
+name = "goody-micro-svc"
