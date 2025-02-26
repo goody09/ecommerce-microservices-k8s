@@ -1,8 +1,8 @@
 terraform {
   backend "s3" {
-    bucket         = "sock-shop-terraform-state-bucket"
+    bucket         = "microservice-cluster-terraform-state-bucket"
     key            = "terraform/state"
     region         = "us-east-1"
-    dynamodb_table = "sock-shop-terraform-locks"
+    dynamodb_table = "microservice-cluster-terraform-locks"
   }
 }
